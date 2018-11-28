@@ -8,19 +8,37 @@
     <string name="editor_activity_title_new_product">Add a Product</string>
 
     <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
-    <string name="category_overview">Overview</string>
+    <string name="category_product_name">Product Name</string>
 
     <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
-    <string name="category_supplier">Supplier</string>
+    <string name="category_product_price">Product Price</string>
+
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="category_quantity">Quantity</string>
+
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="category_supplier_name">Supplier Name</string>
+
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="category_supplier_phone_number">Supplier Phone</string>
+
+    <!-- Special Characters [CHAR LIMIT=1] -->
+    <string name="dollar_sign">$</string>
+
+    <!-- Special Characters [CHAR LIMIT=1] -->
+    <string name="plus_sign">+</string>
+
+    <!-- Special Characters [CHAR LIMIT=1] -->
+    <string name="minus_sign">-</string>
 
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_product_name">Product Name</string>
 
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
-    <string name="hint_price">Price</string>
+    <string name="hint_price">0</string>
 
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
-    <string name="hint_quantity">Quantity</string>
+    <string name="hint_quantity">0</string>
 
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_supplier_name">Supplier Name</string>
@@ -31,5 +49,10 @@
     <!-- Label for editor menu option to save pet and leave editor [CHAR LIMIT=20] -->
     <string name="action_save">Save</string>
 
+    <string name="auto_hint">Very Important</string>
+
+    <string name="less_than_zero">Sorry, but you cannot have less than zero units</string>
+
+    <string name="more_than_ten">Sorry, but you cannot have more than ten units</string>
 
 </resources>

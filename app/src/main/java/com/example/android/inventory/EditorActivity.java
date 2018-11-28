@@ -7,6 +7,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,6 +28,21 @@ public class EditorActivity extends AppCompatActivity {
     private EditText mPriceEditText;
 
     /**
+     * initial quantity's value
+     */
+    private int item_qty = 0;
+
+    /**
+     * Increasing Button
+     */
+    private Button mIncrementBtn;
+
+    /**
+     * Decreasing Button
+     */
+    private Button mDecrementBtn;
+
+    /**
      * EditText field to enter the product's quantity
      */
     private EditText mQuantityEditText;
@@ -40,6 +57,7 @@ public class EditorActivity extends AppCompatActivity {
      */
     private EditText mSupplierPhoneNumberEditText;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +69,23 @@ public class EditorActivity extends AppCompatActivity {
         mQuantityEditText = findViewById(R.id.edit_quantity);
         mSupplierNameEditText = findViewById(R.id.edit_supplier_name);
         mSupplierPhoneNumberEditText = findViewById(R.id.edit_supplier_phone_number);
+        mIncrementBtn = findViewById(R.id.increment_qty_btn_id);
+        mDecrementBtn = findViewById(R.id.decrement_qty_btn_id);
+
+        item_qty = Integer.parseInt(mQuantityEditText.getText().toString());
+
+        mIncrementBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mIncrementQty();
+            }
+        });
+        mDecrementBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDecrementQty();
+            }
+        });
     }
 
     /**
@@ -119,5 +154,35 @@ public class EditorActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Increase Quantity by one every time this button is clicked
+     * more than ten units is not allowed
+     */
+    private void mIncrementQty() {
+        item_qty = Integer.parseInt(mQuantityEditText.getText().toString());
+        item_qty = item_qty + 1;
+        if (item_qty >= 11) {
+            //Show an error message as a toast
+            Toast.makeText(this, getString(R.string.more_than_ten), Toast.LENGTH_LONG).show();
+        } else {
+            mQuantityEditText.setText(Integer.toString(item_qty));
+        }
+    }
+
+    /**
+     * Decrease Quantity by one every time this button is clicked
+     * less than zero units is not allowed
+     */
+    private void mDecrementQty() {
+        item_qty = Integer.parseInt(mQuantityEditText.getText().toString());
+        item_qty = item_qty - 1;
+        if (item_qty <= -1) {
+            //Show an error message as a toast
+            Toast.makeText(this, getString(R.string.less_than_zero), Toast.LENGTH_LONG).show();
+        } else {
+            mQuantityEditText.setText(Integer.toString(item_qty));
+        }
     }
 }
