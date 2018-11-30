@@ -4,7 +4,7 @@
     <!-- Label for overflow menu option that inserts fake data into the app [CHAR LIMIT=20] -->
     <string name="action_insert_dummy_data">Insert Dummy Data</string>
 
-    <!-- Title for the activity to add a new pet [CHAR LIMIT=20] -->
+    <!-- Title for the activity to add a new Product [CHAR LIMIT=20] -->
     <string name="editor_activity_title_new_product">Add a Product</string>
 
     <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
@@ -46,13 +46,67 @@
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_supplier_phone_number">Supplier Phone Number</string>
 
-    <!-- Label for editor menu option to save pet and leave editor [CHAR LIMIT=20] -->
-    <string name="action_save">Save</string>
-
     <string name="auto_hint">Very Important</string>
 
     <string name="less_than_zero">Sorry, but you cannot have less than zero units</string>
 
     <string name="more_than_ten">Sorry, but you cannot have more than ten units</string>
+
+    <!-- Label for the Product's supplier if the supplier is unknown [CHAR LIMIT=20] -->
+    <string name="unknown_supplier">Unknown Supplier</string>
+
+    <!-- Dialog button text for the option to cancel deletion of the current Product [CHAR LIMIT=20] -->
+    <string name="cancel">Cancel</string>
+
+    <!-- Dialog button text for the option to confirm deleting the current Product [CHAR LIMIT=20] -->
+    <string name="delete">Delete</string>
+
+    <!-- Title for the activity to edit an existing Product [CHAR LIMIT=20] -->
+    <string name="editor_activity_title_edit_product">Edit Product</string>
+
+    <!-- Label for editor menu option to save Product and leave editor [CHAR LIMIT=20] -->
+    <string name="action_save">Save</string>
+
+    <!-- Label for editor overflow menu option that deletes the current Product [CHAR LIMIT=20] -->
+    <string name="action_delete">Delete</string>
+
+    <!-- Toast message in editor when new Product has been successfully inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_product_successful">Product saved</string>
+
+    <!-- Toast message in editor when new Product has failed to be inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_product_failed">Error with saving Product</string>
+
+    <!-- Toast message in editor when current Product was successfully updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_product_successful">Product updated</string>
+
+    <!-- Toast message in editor when current Product has failed to be updated [CHAR LIMIT=NONE] -->
+    <string name="editor_update_product_failed">Error with updating Product</string>
+
+    <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current Product [CHAR LIMIT=20] -->
+    <string name="keep_editing">Keep Editing</string>
+
+    <!-- Toast message in editor when current Product was successfully deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_product_successful">Product deleted</string>
+
+    <!-- Toast message in editor when current Product has failed to be deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_product_failed">Error with deleting Product</string>
+
+    <!-- Dialog message to ask the user to confirm deleting the current Product [CHAR LIMIT=NONE] -->
+    <string name="delete_dialog_msg">Delete this Product?</string>
+
+    <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
+    <string name="empty_view_title_text">It\'s a bit lonely here...</string>
+
+    <!-- Subtitle text for the empty view that prompts the user to add a Product [CHAR LIMIT=50] -->
+    <string name="empty_view_subtitle_text">Get started by adding a Product</string>
+    
+    <!-- Label for overflow menu option that deletes all Product data in the app [CHAR LIMIT=20] -->
+    <string name="action_delete_all_entries">Delete All Products</string>
 
 </resources>
