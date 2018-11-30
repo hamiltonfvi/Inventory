@@ -57,9 +57,9 @@
 
     <string name="auto_hint">Very Important</string>
 
-    <string name="less_than_zero">Sorry, but you cannot have less than zero units</string>
+    <string name="less_than_zero">Sorry, but you cannot have less than 0 units</string>
 
-    <string name="more_than_ten">Sorry, but you cannot have more than ten units</string>
+    <string name="more_than_ten">Sorry, but you cannot add more than 10 units</string>
 
     <!-- Label for the Product's supplier if the supplier is unknown [CHAR LIMIT=20] -->
     <string name="unknown_supplier">Unknown Supplier</string>

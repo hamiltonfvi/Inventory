@@ -6,5 +6,5 @@
     <dimen name="activity_margin">16dp</dimen>
     <dimen name="dimen_8dp">8dp</dimen>
     <dimen name="text_size">16sp</dimen>
-    <dimen name="dimen_50dp">50dp</dimen>
+    <dimen name="dimen_48dp">48dp</dimen>
 </resources>

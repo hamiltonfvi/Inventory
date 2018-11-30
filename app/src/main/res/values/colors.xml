@@ -14,4 +14,6 @@
 
     <!-- Primary dark color for the editor -->
     <color name="editorColorPrimaryDark">#0b43a3</color>
+
+    <color name="colorBackground">#f9fbd9</color>
 </resources>

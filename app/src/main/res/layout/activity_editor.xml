@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".EditorActivity">
 
     <LinearLayout
@@ -65,21 +66,22 @@
 
             <Button
                 android:id="@+id/increment_qty_btn_id"
-                android:layout_width="@dimen/dimen_50dp"
-                android:layout_height="@dimen/dimen_50dp"
-                android:layout_marginLeft="@dimen/dimen_50dp"
+                android:layout_width="@dimen/dimen_48dp"
+                android:layout_height="@dimen/dimen_48dp"
+                android:layout_marginLeft="@dimen/dimen_48dp"
                 android:text="@string/plus_sign" />
 
             <EditText
                 android:id="@+id/edit_quantity"
                 style="@style/EditorUnitsStyle"
+                android:focusable="false"
                 android:autofillHints="@string/auto_hint"
                 android:text="@string/hint_price" />
 
             <Button
                 android:id="@+id/decrement_qty_btn_id"
-                android:layout_width="@dimen/dimen_50dp"
-                android:layout_height="@dimen/dimen_50dp"
+                android:layout_width="@dimen/dimen_48dp"
+                android:layout_height="@dimen/dimen_48dp"
                 android:text="@string/minus_sign" />
 
         </LinearLayout>
@@ -130,8 +132,8 @@
             <Spinner
                 android:id="@+id/spinner_stock"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginLeft="@dimen/dimen_50dp"
+                android:layout_height="@dimen/dimen_48dp"
+                android:layout_marginLeft="@dimen/dimen_48dp"
                 android:layout_marginTop="@dimen/dimen_8dp"
                 android:spinnerMode="dropdown" />
 
