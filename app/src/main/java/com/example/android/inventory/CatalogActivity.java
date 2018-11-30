@@ -79,7 +79,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         });
         // Initiate the loader
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
-
     }
 
     /**
@@ -93,7 +92,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         values.put(InventoryEntry.COLUMN_PRICE, 3);
         values.put(InventoryEntry.COLUMN_QUANTITY, 2);
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "Google");
-        values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "888-888-8888");
+        values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER, "888-888-8888");
+        values.put(InventoryEntry.COLUMN_STOCK, InventoryEntry.NO_AVAILABLE);
 
         // Insert a new row for Pixel 3 into the provider using the ContentResolver.
         // Use the {@link InventoryEntry#CONTENT_URI} to indicate that we want to insert

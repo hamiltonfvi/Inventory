@@ -105,5 +105,28 @@ public final class InventoryContract {
          * Type: TEXT
          */
         public static final String COLUMN_SUPPLIER_PHONE_NUMBER = "supplierPhoneNumber";
+
+        /**
+         * Availability of the product.
+         * <p>
+         * Type: TEXT
+         */
+        public static final String COLUMN_STOCK = "stock";
+
+        /**
+         * Possible values for the stock of the product.
+         */
+        public static final int NO_AVAILABLE = 0;
+        public static final int AVAILABLE = 1;
+
+        /**
+         * Returns whether or not the given availability is {@link #NO_AVAILABLE}, {@link #AVAILABLE}.
+         */
+        public static boolean isValidAvailability(int stock) {
+            if (stock == NO_AVAILABLE || stock == AVAILABLE) {
+                return true;
+            }
+            return false;
+        }
     }
 }

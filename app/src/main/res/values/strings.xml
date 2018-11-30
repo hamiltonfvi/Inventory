@@ -22,6 +22,9 @@
     <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
     <string name="category_supplier_phone_number">Supplier Phone</string>
 
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="category_stock">In Stock?</string>
+
     <!-- Special Characters [CHAR LIMIT=1] -->
     <string name="dollar_sign">$</string>
 
@@ -30,6 +33,12 @@
 
     <!-- Special Characters [CHAR LIMIT=1] -->
     <string name="minus_sign">-</string>
+
+    <!-- Label for dropdown menu option if the pet is male [CHAR LIMIT=20] -->
+    <string name="no_available">No</string>
+
+    <!-- Label for dropdown menu option if the pet is female [CHAR LIMIT=20] -->
+    <string name="available">Yes</string>
 
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_product_name">Product Name</string>

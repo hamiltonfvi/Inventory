@@ -17,8 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.inventory.data.InventoryContract.InventoryEntry;
@@ -81,7 +84,18 @@ public class EditorActivity extends AppCompatActivity implements
     private EditText mSupplierPhoneNumberEditText;
 
     /**
-     * Boolean flag that keeps track of whether the pet has been edited (true) or not (false)
+     * Spinner to enter the Product's Availability
+     */
+    private Spinner mStockSpinner;
+
+    /**
+     * Availability of the product. The possible valid values are in the InventoryContract.java file:
+     * {@link InventoryEntry#NO_AVAILABLE} or {@link InventoryEntry#AVAILABLE}.
+     */
+    private int mStock = InventoryEntry.NO_AVAILABLE;
+
+    /**
+     * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
      */
     private boolean mProductHasChanged = false;
 
@@ -120,7 +134,7 @@ public class EditorActivity extends AppCompatActivity implements
             // Otherwise this is an existing product, so change app bar to say "Edit Product"
             setTitle(getString(R.string.editor_activity_title_edit_product));
 
-            // Initialize a loader to read the pet data from the database
+            // Initialize a loader to read the product data from the database
             // and display the current values in the editor
             getLoaderManager().initLoader(EXISTING_PRODUCT_LOADER, null, this);
         }
@@ -133,6 +147,7 @@ public class EditorActivity extends AppCompatActivity implements
         mSupplierPhoneNumberEditText = findViewById(R.id.edit_supplier_phone_number);
         mIncrementBtn = findViewById(R.id.increment_qty_btn_id);
         mDecrementBtn = findViewById(R.id.decrement_qty_btn_id);
+        mStockSpinner = findViewById(R.id.spinner_stock);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -144,6 +159,7 @@ public class EditorActivity extends AppCompatActivity implements
         mSupplierPhoneNumberEditText.setOnTouchListener(mTouchListener);
         mIncrementBtn.setOnTouchListener(mTouchListener);
         mDecrementBtn.setOnTouchListener(mTouchListener);
+        mStockSpinner.setOnTouchListener(mTouchListener);
 
         item_qty = Integer.parseInt(mQuantityEditText.getText().toString());
 
@@ -157,6 +173,45 @@ public class EditorActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 mDecrementQty();
+            }
+        });
+
+        setupSpinner();
+    }
+
+    /**
+     * Setup the dropdown spinner that allows the user to select the availability of the product.
+     */
+    private void setupSpinner() {
+        // Create adapter for spinner. The list options are from the String array it will use
+        // the spinner will use the default layout
+        ArrayAdapter stockSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_availabily_options, android.R.layout.simple_spinner_item);
+
+        // Specify dropdown layout style - simple list view with 1 item per line
+        stockSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+
+        // Apply the adapter to the spinner
+        mStockSpinner.setAdapter(stockSpinnerAdapter);
+
+        // Set the integer mSelected to the constant values
+        mStockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(selection)) {
+                    if (selection.equals(getString(R.string.no_available))) {
+                        mStock = InventoryEntry.NO_AVAILABLE;
+                    } else if (selection.equals(getString(R.string.available))) {
+                        mStock = InventoryEntry.AVAILABLE;
+                    }
+                }
+            }
+
+            // Because AdapterView is an abstract class, onNothingSelected must be defined
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mStock = InventoryEntry.NO_AVAILABLE;
             }
         });
     }
@@ -180,7 +235,7 @@ public class EditorActivity extends AppCompatActivity implements
         if (mCurrentProductUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
                 TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(supplierNameString) &&
-                TextUtils.isEmpty(supplierPhoneNumberString)) {
+                TextUtils.isEmpty(supplierPhoneNumberString) && mStock == InventoryEntry.NO_AVAILABLE) {
             // Since no fields were modified, we can return early without creating a new product.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
@@ -194,6 +249,7 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(InventoryEntry.COLUMN_QUANTITY, quantity);
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
         values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER, supplierPhoneNumberString);
+        values.put(InventoryEntry.COLUMN_STOCK, mStock);
 
         // If the price is not provided by the user, don't try to parse the string into an
         // integer value. Use 0 by default.
@@ -276,7 +332,7 @@ public class EditorActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
-                // Save pet to database
+                // Save product to database
                 saveProduct();
                 // Exit activity
                 finish();
@@ -288,7 +344,7 @@ public class EditorActivity extends AppCompatActivity implements
                 return true;
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
-                // If the pet hasn't changed, continue with navigating up to parent activity
+                // If the product hasn't changed, continue with navigating up to parent activity
                 // which is the {@link CatalogActivity}.
                 if (!mProductHasChanged) {
                     NavUtils.navigateUpFromSameTask(EditorActivity.this);
@@ -319,7 +375,7 @@ public class EditorActivity extends AppCompatActivity implements
      */
     @Override
     public void onBackPressed() {
-        // If the pet hasn't changed, continue with handling back button press
+        // If the product hasn't changed, continue with handling back button press
         if (!mProductHasChanged) {
             super.onBackPressed();
             return;
@@ -350,7 +406,8 @@ public class EditorActivity extends AppCompatActivity implements
                 InventoryEntry.COLUMN_PRICE,
                 InventoryEntry.COLUMN_QUANTITY,
                 InventoryEntry.COLUMN_SUPPLIER_NAME,
-                InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER};
+                InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER,
+                InventoryEntry.COLUMN_STOCK};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -377,6 +434,7 @@ public class EditorActivity extends AppCompatActivity implements
             int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_QUANTITY);
             int supplierColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER_NAME);
             int supplierPhoneColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER);
+            int stockProductColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_STOCK);
 
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
@@ -384,6 +442,7 @@ public class EditorActivity extends AppCompatActivity implements
             int quantity = cursor.getInt(quantityColumnIndex);
             String supplierName = cursor.getString(supplierColumnIndex);
             String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
+            int stock = cursor.getInt(stockProductColumnIndex);
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
@@ -391,6 +450,21 @@ public class EditorActivity extends AppCompatActivity implements
             mQuantityEditText.setText(Integer.toString(quantity));
             mSupplierNameEditText.setText(supplierName);
             mSupplierPhoneNumberEditText.setText(supplierPhone);
+
+            // Gender is a dropdown spinner, so map the constant value from the database
+            // into one of the dropdown options (0 is Unknown, 1 is Male, 2 is Female).
+            // Then call setSelection() so that option is displayed on screen as the current selection.
+            switch (stock) {
+                case InventoryEntry.NO_AVAILABLE:
+                    mStockSpinner.setSelection(0);
+                    break;
+                case InventoryEntry.AVAILABLE:
+                    mStockSpinner.setSelection(1);
+                    break;
+                default:
+                    mStockSpinner.setSelection(0);
+                    break;
+            }
         }
     }
 
@@ -402,6 +476,7 @@ public class EditorActivity extends AppCompatActivity implements
         mQuantityEditText.setText("");
         mSupplierNameEditText.setText("");
         mSupplierPhoneNumberEditText.setText("");
+        mStockSpinner.setSelection(0);  // Select "not available" by default
     }
 
     /**
@@ -421,7 +496,7 @@ public class EditorActivity extends AppCompatActivity implements
         builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the product.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -443,7 +518,7 @@ public class EditorActivity extends AppCompatActivity implements
         builder.setMessage(R.string.delete_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User clicked the "Delete" button, so delete the pet.
+                // User clicked the "Delete" button, so delete the product.
                 deleteProduct();
             }
         });
@@ -466,11 +541,11 @@ public class EditorActivity extends AppCompatActivity implements
      * Perform the deletion of the product in the database.
      */
     private void deleteProduct() {
-        // Only perform the delete if this is an existing pet.
+        // Only perform the delete if this is an existing product.
         if (mCurrentProductUri != null) {
-            // Call the ContentResolver to delete the pet at the given content URI.
-            // Pass in null for the selection and selection args because the mCurrentPetUri
-            // content URI already identifies the pet that we want.
+            // Call the ContentResolver to delete the product at the given content URI.
+            // Pass in null for the selection and selection args because the mCurrentProductUri
+            // content URI already identifies the product that we want.
             int rowsDeleted = getContentResolver().delete(mCurrentProductUri, null, null);
 
             // Show a toast message depending on whether or not the delete was successful.

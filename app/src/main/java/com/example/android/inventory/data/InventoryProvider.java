@@ -152,6 +152,24 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Product requires a name");
         }
 
+        // Check that the price is not null
+        Integer price = values.getAsInteger((InventoryEntry.COLUMN_PRICE));
+        if (price == null) {
+            throw new IllegalArgumentException("Product requires a price");
+        }
+
+        // Check that the quantity is not null
+        Integer quantity = values.getAsInteger((InventoryEntry.COLUMN_QUANTITY));
+        if (quantity == null) {
+            throw new IllegalArgumentException("Product requires a quantity");
+        }
+
+        // Check that the stock is not null
+        Integer stock = values.getAsInteger((InventoryEntry.COLUMN_STOCK));
+        if (stock == null || !InventoryEntry.isValidAvailability(stock)) {
+            throw new IllegalArgumentException("Product requires a valid availability");
+        }
+
         // Get writable database
         SQLiteDatabase database = mDBHelper.getWritableDatabase();
 
@@ -261,6 +279,16 @@ public class InventoryProvider extends ContentProvider {
             Integer quantity = values.getAsInteger(InventoryEntry.COLUMN_QUANTITY);
             if (quantity != null && quantity < 0) {
                 throw new IllegalArgumentException("Product requires valid quantity");
+            }
+        }
+
+        // If the {@link InventoryEntry#COLUMN_STOCK} key is present,
+        // check that the stock value is valid.
+        if (values.containsKey(InventoryEntry.COLUMN_STOCK)) {
+            // Check that the stock is not null or invalid
+            Integer stock = values.getAsInteger(InventoryEntry.COLUMN_STOCK);
+            if (stock == null || !InventoryEntry.isValidAvailability(stock)) {
+                throw new IllegalArgumentException("Product requires valid availability");
             }
         }
 
