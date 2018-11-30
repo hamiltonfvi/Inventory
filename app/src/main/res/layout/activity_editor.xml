@@ -43,7 +43,8 @@
                 android:id="@+id/edit_price"
                 style="@style/EditorUnitsStyle"
                 android:autofillHints="@string/auto_hint"
-                android:hint="@string/hint_price" />
+                android:hint="@string/hint_price"
+                android:inputType="numberDecimal" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -74,8 +75,9 @@
             <EditText
                 android:id="@+id/edit_quantity"
                 style="@style/EditorUnitsStyle"
-                android:focusable="false"
                 android:autofillHints="@string/auto_hint"
+                android:focusable="false"
+                android:inputType="number"
                 android:text="@string/hint_price" />
 
             <Button
