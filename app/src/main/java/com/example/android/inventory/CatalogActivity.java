@@ -94,6 +94,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, "Google");
         values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER, "888-888-8888");
         values.put(InventoryEntry.COLUMN_STOCK, InventoryEntry.NO_AVAILABLE);
+        values.put(InventoryEntry.COLUMN_ORDER, InventoryEntry.ORDER_PHONE);
 
         // Insert a new row for Pixel 3 into the provider using the ContentResolver.
         // Use the {@link InventoryEntry#CONTENT_URI} to indicate that we want to insert
@@ -140,7 +141,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         String[] projection = {
                 InventoryEntry._ID,
                 InventoryEntry.COLUMN_PRODUCT_NAME,
-                InventoryEntry.COLUMN_SUPPLIER_NAME};
+                InventoryEntry.COLUMN_PRICE,
+                InventoryEntry.COLUMN_QUANTITY};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,

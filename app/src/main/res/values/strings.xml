@@ -25,6 +25,15 @@
     <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
     <string name="category_stock">In Stock?</string>
 
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="category_order">Order By</string>
+
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="price_text">Unit Price: </string>
+
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="quantity_text">In Store: </string>
+
     <!-- Special Characters [CHAR LIMIT=1] -->
     <string name="dollar_sign">$</string>
 
@@ -34,11 +43,20 @@
     <!-- Special Characters [CHAR LIMIT=1] -->
     <string name="minus_sign">-</string>
 
-    <!-- Label for dropdown menu option if the pet is male [CHAR LIMIT=20] -->
+    <!-- Label for dropdown menu option if the product is not available [CHAR LIMIT=20] -->
     <string name="no_available">No</string>
 
-    <!-- Label for dropdown menu option if the pet is female [CHAR LIMIT=20] -->
+    <!-- Label for dropdown menu option if the product is available [CHAR LIMIT=20] -->
     <string name="available">Yes</string>
+
+    <!-- Label for dropdown menu option if the order is via phone [CHAR LIMIT=20] -->
+    <string name="order_phone">Phone</string>
+
+    <!-- Label for dropdown menu option if the order is via email [CHAR LIMIT=20] -->
+    <string name="order_email">Email</string>
+
+    <!-- Label for dropdown menu option if the order is via web [CHAR LIMIT=20] -->
+    <string name="order_web">web</string>
 
     <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
     <string name="hint_product_name">Product Name</string>

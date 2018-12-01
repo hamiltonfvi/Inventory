@@ -107,6 +107,14 @@ public final class InventoryContract {
         public static final String COLUMN_SUPPLIER_PHONE_NUMBER = "supplierPhoneNumber";
 
         /**
+         * Available order methods to get a product.
+         * <p>
+         * Type: TEXT
+         */
+
+        public static final String COLUMN_ORDER = "order_method";
+
+        /**
          * Availability of the product.
          * <p>
          * Type: TEXT
@@ -114,7 +122,14 @@ public final class InventoryContract {
         public static final String COLUMN_STOCK = "stock";
 
         /**
-         * Possible values for the stock of the product.
+         * Sales phone number.
+         * <p>
+         * Type: INTEGER
+         */
+        public static final String COLUMN_SALES = "sales_number";
+
+        /**
+         * Values for the stock of the product.
          */
         public static final int NO_AVAILABLE = 0;
         public static final int AVAILABLE = 1;
@@ -124,6 +139,23 @@ public final class InventoryContract {
          */
         public static boolean isValidAvailability(int stock) {
             if (stock == NO_AVAILABLE || stock == AVAILABLE) {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Values for the method of order.
+         */
+        public static final int ORDER_PHONE = 0;
+        public static final int ORDER_EMAIL = 1;
+        public static final int ORDER_WEB = 2;
+
+        /**
+         * Returns whether or not the given method is.
+         */
+        public static boolean isValidOrder(int order) {
+            if (order == ORDER_PHONE || order == ORDER_EMAIL || order == ORDER_WEB) {
                 return true;
             }
             return false;

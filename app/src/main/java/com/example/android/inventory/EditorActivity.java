@@ -32,6 +32,8 @@ import com.example.android.inventory.data.InventoryContract.InventoryEntry;
 public class EditorActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final int REQUEST_PHONE_CALL = 1;
+
     /**
      * Identifier for the product data loader
      */
@@ -95,6 +97,18 @@ public class EditorActivity extends AppCompatActivity implements
     private int mStock = InventoryEntry.NO_AVAILABLE;
 
     /**
+     * Spinner to enter the Product's Order
+     */
+    private Spinner mOrderSpinner;
+
+    /**
+     * Order type of the product. The possible valid values are in the InventoryContract.java file:
+     * {@link InventoryEntry#ORDER_PHONE} or {@link InventoryEntry#ORDER_EMAIL
+     * or {@link InventoryEntry#ORDER_WEB}.
+     */
+    private int mOrder = InventoryEntry.ORDER_PHONE;
+
+    /**
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
      */
     private boolean mProductHasChanged = false;
@@ -148,6 +162,7 @@ public class EditorActivity extends AppCompatActivity implements
         mIncrementBtn = findViewById(R.id.increment_qty_btn_id);
         mDecrementBtn = findViewById(R.id.decrement_qty_btn_id);
         mStockSpinner = findViewById(R.id.spinner_stock);
+        mOrderSpinner = findViewById(R.id.spinner_order);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know if there are unsaved changes
@@ -160,6 +175,7 @@ public class EditorActivity extends AppCompatActivity implements
         mIncrementBtn.setOnTouchListener(mTouchListener);
         mDecrementBtn.setOnTouchListener(mTouchListener);
         mStockSpinner.setOnTouchListener(mTouchListener);
+        mOrderSpinner.setOnTouchListener(mTouchListener);
 
         item_qty = Integer.parseInt(mQuantityEditText.getText().toString());
 
@@ -187,12 +203,16 @@ public class EditorActivity extends AppCompatActivity implements
         // the spinner will use the default layout
         ArrayAdapter stockSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.array_availabily_options, android.R.layout.simple_spinner_item);
+        ArrayAdapter orderSpinnerAdapter = ArrayAdapter.createFromResource(this,
+                R.array.array_order_options, android.R.layout.simple_spinner_item);
 
         // Specify dropdown layout style - simple list view with 1 item per line
         stockSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        orderSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         // Apply the adapter to the spinner
         mStockSpinner.setAdapter(stockSpinnerAdapter);
+        mOrderSpinner.setAdapter(orderSpinnerAdapter);
 
         // Set the integer mSelected to the constant values
         mStockSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -212,6 +232,29 @@ public class EditorActivity extends AppCompatActivity implements
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 mStock = InventoryEntry.NO_AVAILABLE;
+            }
+        });
+
+        // Set the integer mSelected to the constant values
+        mOrderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selection = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(selection)) {
+                    if (selection.equals(getString(R.string.order_phone))) {
+                        mOrder = InventoryEntry.ORDER_PHONE;
+                    } else if (selection.equals(getString(R.string.order_email))) {
+                        mStock = InventoryEntry.ORDER_EMAIL;
+                    } else {
+                        mStock = InventoryEntry.ORDER_WEB;
+                    }
+                }
+            }
+
+            // Because AdapterView is an abstract class, onNothingSelected must be defined
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mStock = InventoryEntry.ORDER_PHONE;
             }
         });
     }
@@ -235,7 +278,8 @@ public class EditorActivity extends AppCompatActivity implements
         if (mCurrentProductUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
                 TextUtils.isEmpty(quantityString) && TextUtils.isEmpty(supplierNameString) &&
-                TextUtils.isEmpty(supplierPhoneNumberString) && mStock == InventoryEntry.NO_AVAILABLE) {
+                TextUtils.isEmpty(supplierPhoneNumberString) && mStock == InventoryEntry.NO_AVAILABLE &&
+                mOrder == InventoryEntry.ORDER_PHONE) {
             // Since no fields were modified, we can return early without creating a new product.
             // No need to create ContentValues and no need to do any ContentProvider operations.
             return;
@@ -250,6 +294,7 @@ public class EditorActivity extends AppCompatActivity implements
         values.put(InventoryEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
         values.put(InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER, supplierPhoneNumberString);
         values.put(InventoryEntry.COLUMN_STOCK, mStock);
+        values.put(InventoryEntry.COLUMN_ORDER, mOrder);
 
         // If the price is not provided by the user, don't try to parse the string into an
         // integer value. Use 0 by default.
@@ -407,7 +452,8 @@ public class EditorActivity extends AppCompatActivity implements
                 InventoryEntry.COLUMN_QUANTITY,
                 InventoryEntry.COLUMN_SUPPLIER_NAME,
                 InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER,
-                InventoryEntry.COLUMN_STOCK};
+                InventoryEntry.COLUMN_STOCK,
+                InventoryEntry.COLUMN_ORDER};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -435,6 +481,7 @@ public class EditorActivity extends AppCompatActivity implements
             int supplierColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER_NAME);
             int supplierPhoneColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER_PHONE_NUMBER);
             int stockProductColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_STOCK);
+            int orderColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_ORDER);
 
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
@@ -443,6 +490,7 @@ public class EditorActivity extends AppCompatActivity implements
             String supplierName = cursor.getString(supplierColumnIndex);
             String supplierPhone = cursor.getString(supplierPhoneColumnIndex);
             int stock = cursor.getInt(stockProductColumnIndex);
+            int order = cursor.getInt(orderColumnIndex);
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(name);
@@ -451,8 +499,8 @@ public class EditorActivity extends AppCompatActivity implements
             mSupplierNameEditText.setText(supplierName);
             mSupplierPhoneNumberEditText.setText(supplierPhone);
 
-            // Gender is a dropdown spinner, so map the constant value from the database
-            // into one of the dropdown options (0 is Unknown, 1 is Male, 2 is Female).
+            // Stock is a dropdown spinner, so map the constant value from the database
+            // into one of the dropdown options (0 is NO_AVAILABLE AND 1 is AVAILABLE).
             // Then call setSelection() so that option is displayed on screen as the current selection.
             switch (stock) {
                 case InventoryEntry.NO_AVAILABLE:
@@ -463,6 +511,24 @@ public class EditorActivity extends AppCompatActivity implements
                     break;
                 default:
                     mStockSpinner.setSelection(0);
+                    break;
+            }
+
+            // Order is a dropdown spinner, so map the constant value from the database
+            // into one of the dropdown options (0 is ORDER_PHONE, 1 is ORDER_EMAIL AND 2 is ORDER_WEB).
+            // Then call setSelection() so that option is displayed on screen as the current selection.
+            switch (stock) {
+                case InventoryEntry.ORDER_PHONE:
+                    mOrderSpinner.setSelection(0);
+                    break;
+                case InventoryEntry.ORDER_EMAIL:
+                    mOrderSpinner.setSelection(1);
+                    break;
+                case InventoryEntry.ORDER_WEB:
+                    mOrderSpinner.setSelection(2);
+                    break;
+                default:
+                    mOrderSpinner.setSelection(0);
                     break;
             }
         }
@@ -477,6 +543,7 @@ public class EditorActivity extends AppCompatActivity implements
         mSupplierNameEditText.setText("");
         mSupplierPhoneNumberEditText.setText("");
         mStockSpinner.setSelection(0);  // Select "not available" by default
+        mOrderSpinner.setSelection(0);  // Select "Order by Phone" by default
     }
 
     /**

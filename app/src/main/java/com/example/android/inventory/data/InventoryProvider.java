@@ -170,6 +170,12 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Product requires a valid availability");
         }
 
+        // Check that the order method is not null
+        Integer order = values.getAsInteger((InventoryEntry.COLUMN_ORDER));
+        if (order == null || !InventoryEntry.isValidOrder(order)) {
+            throw new IllegalArgumentException("Product requires a valid order");
+        }
+
         // Get writable database
         SQLiteDatabase database = mDBHelper.getWritableDatabase();
 
@@ -289,6 +295,16 @@ public class InventoryProvider extends ContentProvider {
             Integer stock = values.getAsInteger(InventoryEntry.COLUMN_STOCK);
             if (stock == null || !InventoryEntry.isValidAvailability(stock)) {
                 throw new IllegalArgumentException("Product requires valid availability");
+            }
+        }
+
+        // If the {@link InventoryEntry#COLUMN_ORDER} key is present,
+        // check that the order value is valid.
+        if (values.containsKey(InventoryEntry.COLUMN_ORDER)) {
+            // Check that the order is not null or invalid
+            Integer order = values.getAsInteger(InventoryEntry.COLUMN_ORDER);
+            if (order == null || !InventoryEntry.isValidOrder(order)) {
+                throw new IllegalArgumentException("Product requires a valid order");
             }
         }
 
