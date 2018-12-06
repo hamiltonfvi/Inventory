@@ -43,6 +43,10 @@
     <!-- Special Characters [CHAR LIMIT=1] -->
     <string name="minus_sign">-</string>
 
+    <string name="order">Order</string>
+
+    <string name="sale">Sale</string>
+
     <!-- Label for dropdown menu option if the product is not available [CHAR LIMIT=20] -->
     <string name="no_available">No</string>
 
